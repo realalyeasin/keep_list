@@ -22,6 +22,7 @@ class _KeepListState extends State<KeepList> {
       _itemController.text = documentSnapshot['item'];
     }
     await showModalBottomSheet(
+      backgroundColor: const Color.fromRGBO(43, 8, 42, 1),
         isScrollControlled: true,
         context: context,
         builder: (BuildContext context) {
@@ -37,13 +38,13 @@ class _KeepListState extends State<KeepList> {
               children: [
                 TextField(
                   controller: _itemController,
-                  decoration: const InputDecoration(labelText: 'Add item'),
+                  decoration: const InputDecoration(labelText: 'Add item', hoverColor: Colors.white),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
                 ElevatedButton(
-                  child: Text(action == 'create' ? 'Create' : 'Update'),
+                  child: Text(action == 'create' ? 'Create' : 'Update', style: const TextStyle(backgroundColor: Color.fromRGBO(232, 237, 238, 1)),),
                   onPressed: () async {
                     final String? item = _itemController.text;
                     if (item != null) {
@@ -76,8 +77,14 @@ class _KeepListState extends State<KeepList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(106, 210, 247, 1),
       appBar: AppBar(
-        title: const Text('Keep List'),
+        centerTitle: true,
+        backgroundColor: const Color.fromRGBO(21, 70, 85, 1),
+        title: const Text('Keep List',
+        style: TextStyle(
+          letterSpacing: .5
+        ),),
       ),
       body: StreamBuilder(
         stream: _lists.snapshots(),
@@ -89,27 +96,47 @@ class _KeepListState extends State<KeepList> {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(top: 16, left: 9, right: 9, bottom: 0),
                     child: Container(
-                      color: Colors.green,
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(43, 8, 42, 1),
+                        borderRadius: BorderRadius.circular(5)
+                      ),
+
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Row(
+                        child: Stack(
                           children: [
-                            Text(documentSnapshot['item']),
-                            Row(
-                              children: [
-                                IconButton(
-                                    onPressed: () {
-                                      _createOrUpdate(documentSnapshot);
-                                    },
-                                    icon: const Icon(Icons.edit)),
-                                IconButton(
-                                    onPressed: () {
-                                      _deleteItem(documentSnapshot.id);
-                                    },
-                                    icon: const Icon(Icons.delete)),
-                              ],
+                            Positioned(
+                              child: SizedBox(
+                                height: 30,
+                                child: Text(
+                                  documentSnapshot['item'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 17,
+                                  color: Color.fromRGBO(232, 237, 238, 1),
+                                  letterSpacing: .5),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 295,
+                              bottom: -8,
+                              child: Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        _createOrUpdate(documentSnapshot);
+                                      },
+                                      icon: const Icon(Icons.edit, color: Colors.white,)),
+                                  IconButton(
+                                      onPressed: () {
+                                        _deleteItem(documentSnapshot.id);
+                                      },
+                                      icon: const Icon(Icons.delete, color: Color.fromRGBO(232, 237, 238, 1),)),
+                                ],
+                              ),
                             )
                           ],
                         ),
@@ -127,7 +154,8 @@ class _KeepListState extends State<KeepList> {
         onPressed: () {
           _createOrUpdate();
         },
-        child: const Icon(Icons.add),
+        backgroundColor: const Color.fromRGBO(21, 70, 85, 1),
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
     );
   }
